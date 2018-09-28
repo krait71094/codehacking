@@ -23,12 +23,22 @@ Route::get('/admin', function (){
     return view ('admin.index');
 });
 
-Route::resource('admin/users', 'AdminUsersController', ['names'=>[
+Route::group(['middleware'=>'admin'], function(){
+
+    Route::resource('admin/users', 'AdminUsersController', ['names'=>[
 
 
-    'index'=>'admin.users.index',
-    'create'=>'admin.users.create',
-    'store'=>'admin.users.store',
-    'edit'=>'admin.users.edit'
+        'index'=>'admin.users.index',
+        'create'=>'admin.users.create',
+        'store'=>'admin.users.store',
+        'edit'=>'admin.users.edit'
 
-]]);
+    ]]);
+
+    Route::resource('admin/posts', 'AdminPostsController');
+
+});
+
+Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
+
+
